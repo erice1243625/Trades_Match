@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TradesMatch — Automotive Careers</title>
+<style>
+:root {
+  --site-primary: #123b35;
+  --site-on-primary: #ffffff;
+  --site-secondary: #e7b65c;
+  --site-on-secondary: #17221e;
+  --site-background: #f4f5ef;
+  --site-on-background: #18231f;
+  --site-font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --site-font-heading: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --site-heading-scale: 1;
+  --site-spacing-scale: 1;
+  --site-radius-scale: 1;
+  --site-decoration-opacity: 1;
+  color-scheme: light dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: var(--site-font-body); background: var(--site-background); color: var(--site-on-background); }
+#app { min-height: 100vh; width: 100%; background-color: var(--site-background); color: var(--site-on-background); border-radius: 0; overflow: hidden; }
+.site-header { background: var(--site-primary); color: var(--site-on-primary); padding: calc(18px * var(--site-spacing-scale)) clamp(20px, 5vw, 76px); }
+.nav { display:flex; align-items:center; justify-content:space-between; gap:20px; max-width:1200px; margin:auto; }
+.brand { display:flex; gap:10px; align-items:center; font-weight:850; letter-spacing:-.7px; font-size:1.18rem; }
+.brand-mark { width:35px; height:35px; border-radius:11px; display:grid; place-items:center; color:var(--site-on-secondary); background:var(--site-secondary); font-weight:900; }
+.nav-links { display:flex; align-items:center; gap:25px; font-size:.92rem; }
+.nav-links a { color:inherit; text-decoration:none; opacity:.88; }
+.nav-links a:hover { opacity:1; text-decoration:underline; }
+button, input, select { font:inherit; }
+.btn { border:0; cursor:pointer; border-radius:999px; padding:12px 18px; font-weight:750; transition:transform .15s, opacity .15s; }
+.btn:hover { transform:translateY(-1px); }
+.btn-gold { background:var(--site-secondary); color:var(--site-on-secondary); }
+.btn-dark { background:var(--site-primary); color:var(--site-on-primary); }
+.btn-outline { background:transparent; border:1px solid currentColor; color:inherit; }
+.hero { position:relative; background:var(--site-primary); color:white; padding:clamp(45px, 7vw, 88px) 24px 68px; overflow:hidden; }
+.hero:after { content:""; position:absolute; width:420px; height:420px; border:1px solid rgba(255,255,255,.13); border-radius:50%; right:-100px; top:-180px; box-shadow:0 0 0 45px rgba(255,255,255,.035),0 0 0 90px rgba(255,255,255,.025); opacity:var(--site-decoration-opacity); pointer-events:none; }
+.hero-inner { max-width:1200px; margin:auto; display:grid; grid-template-columns:1.1fr .9fr; align-items:center; gap:55px; position:relative; z-index:1; }
+.eyebrow { text-transform:uppercase; letter-spacing:2px; color:var(--site-secondary); font-size:.75rem; font-weight:850; }
+h1,h2,h3 { font-family:var(--site-font-heading); letter-spacing:-1.5px; }
+h1 { font-size:calc(clamp(2.65rem, 5vw, 4.7rem) * var(--site-heading-scale)); line-height:1.02; margin:17px 0 22px; max-width:700px; }
+.hero p { font-size:1.08rem; line-height:1.7; max-width:590px; color:#dce6df; }
+.hero-actions { display:flex; flex-wrap:wrap; gap:12px; margin-top:28px; }
+.hero-note { display:flex; gap:10px; align-items:center; color:#dce6df; font-size:.86rem; margin-top:24px; }
+.hero-card { background:#f7f5ed; color:#18231f; border-radius:calc(25px * var(--site-radius-scale)); padding:25px; box-shadow:0 24px 65px rgba(0,0,0,.2); transform:rotate(1deg); }
+.card-top { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+.pill { display:inline-flex; align-items:center; gap:6px; border-radius:999px; padding:6px 10px; font-size:.73rem; font-weight:800; background:#e0eee5; color:#246143; }
+.pill.gold { background:#f7e8c8; color:#795516; }
+.match-person { display:flex; gap:13px; align-items:center; margin:22px 0; }
+.avatar { width:52px; height:52px; display:grid; place-items:center; border-radius:16px; background:#d7e3db; color:#123b35; font-weight:900; font-size:1.2rem; }
+.match-person h3 { margin:0 0 4px; letter-spacing:-.4px; font-size:1.1rem; }
+.muted { color:#69756e; font-size:.86rem; }
+.skill-row { display:flex; flex-wrap:wrap; gap:7px; margin:16px 0 20px; }
+.skill { background:#e9ece6; border-radius:7px; padding:7px 9px; font-size:.77rem; font-weight:700; }
+.match-footer { display:flex; justify-content:space-between; align-items:center; border-top:1px solid #dfe3dc; padding-top:17px; gap:12px; }
+main { max-width:1200px; margin:auto; padding:0 24px; }
+.stats { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:-24px; position:relative; z-index:2; }
+.stat { background:light-dark(#fff,#202a26); border:1px solid light-dark(#e2e6df,#36413b); border-radius:calc(16px * var(--site-radius-scale)); padding:22px; box-shadow:0 8px 22px rgba(17,35,26,.06); }
+.stat strong { display:block; font-size:1.65rem; letter-spacing:-1px; color:light-dark(#123b35,#e7b65c); }
+.stat span { font-size:.85rem; color:light-dark(#67736b,#c1cbc3); }
+.section { padding:76px 0 18px; }
+.section-heading { display:flex; justify-content:space-between; align-items:end; gap:25px; margin-bottom:27px; }
+.section-heading h2 { font-size:calc(clamp(2rem, 3.4vw, 3rem) * var(--site-heading-scale)); margin:10px 0 0; line-height:1.08; }
+.section-heading p { max-width:460px; line-height:1.65; color:light-dark(#65716a,#c0cbc2); margin:0; }
+.tabs { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
+.tab { background:transparent; border:1px solid light-dark(#d2d9d1,#45534a); color:inherit; padding:10px 15px; border-radius:999px; cursor:pointer; font-weight:750; }
+.tab.active { background:var(--site-primary); color:var(--site-on-primary); border-color:var(--site-primary); }
+.jobs { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.job { background:light-dark(#fff,#202a26); border:1px solid light-dark(#e0e5dd,#36413b); border-radius:calc(18px * var(--site-radius-scale)); padding:22px; display:flex; flex-direction:column; min-height:270px; }
+.job .job-icon { width:43px; height:43px; border-radius:13px; background:light-dark(#e5eee6,#33443a); display:grid; place-items:center; font-size:1.3rem; }
+.job h3 { margin:18px 0 8px; font-size:1.25rem; letter-spacing:-.6px; }
+.job p { margin:0; color:light-dark(#65716a,#c0cbc2); line-height:1.55; font-size:.9rem; }
+.job-bottom { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:auto; padding-top:20px; }
+.job-bottom span { font-size:.78rem; color:light-dark(#65716a,#c0cbc2); }
+.job-bottom button { border:0; border-radius:999px; background:var(--site-secondary); color:var(--site-on-secondary); padding:9px 12px; cursor:pointer; font-size:.82rem; font-weight:800; }
+.how-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+.step { padding:24px; border-radius:calc(18px * var(--site-radius-scale)); background:light-dark(#e9eee7,#202a26); }
+.step-number { color:light-dark(#748176,#b9c5bb); font-size:.8rem; font-weight:900; letter-spacing:1.5px; }
+.step h3 { font-size:1.25rem; letter-spacing:-.5px; margin:15px 0 9px; }
+.step p { color:light-dark(#65716a,#c0cbc2); line-height:1.6; margin:0; font-size:.9rem; }
+.cta-panel { margin:75px 0; background:var(--site-secondary); color:var(--site-on-secondary); border-radius:calc(24px * var(--site-radius-scale)); padding:clamp(26px,5vw,50px); display:flex; align-items:center; justify-content:space-between; gap:25px; }
+.cta-panel h2 { margin:0 0 10px; font-size:calc(clamp(1.8rem,3.2vw,2.7rem) * var(--site-heading-scale)); line-height:1.1; }
+.cta-panel p { margin:0; max-width:620px; line-height:1.6; }
+.cta-panel .btn { background:var(--site-primary); color:var(--site-on-primary); flex-shrink:0; }
+.footer { background:var(--site-primary); color:#dce6df; padding:30px 24px; }
+.footer-inner { max-width:1200px; margin:auto; display:flex; justify-content:space-between; align-items:center; gap:20px; font-size:.85rem; }
+.footer strong { color:white; }
+.modal-backdrop { display:none; position:fixed; inset:0; z-index:10; background:rgba(8,18,14,.65); padding:20px; align-items:center; justify-content:center; }
+.modal-backdrop.open { display:flex; }
+.modal { width:min(520px,100%); background:light-dark(#fff,#202a26); color:var(--site-on-background); border-radius:20px; padding:28px; max-height:90vh; overflow:auto; box-shadow:0 25px 80px rgba(0,0,0,.3); }
+.modal-head { display:flex; justify-content:space-between; align-items:start; gap:15px; }
+.modal h2 { margin:0 0 8px; font-size:1.7rem; }
+.close { border:0; background:transparent; color:inherit; font-size:1.5rem; cursor:pointer; }
+.form-field { margin:16px 0; }
+.form-field label { display:block; font-weight:750; font-size:.85rem; margin-bottom:7px; }
+.form-field input,.form-field select { width:100%; border:1px solid light-dark(#cfd8ce,#45534a); border-radius:10px; padding:12px; background:light-dark(#fff,#17201c); color:inherit; }
+.form-message { display:none; margin-top:15px; background:light-dark(#e3f2e6,#2d4536); color:light-dark(#1b5731,#d8f2df); border-radius:10px; padding:13px; font-size:.9rem; line-height:1.5; }
+.form-message.show { display:block; }
+.match-results { display:none; margin-top:18px; }
+.match-results.show { display:block; }
+.match-list { display:grid; gap:12px; margin-top:16px; }
+.match-result { border:1px solid light-dark(#dfe5dc,#45534a); border-radius:14px; padding:15px; }
+.match-result h3 { margin:0 0 5px; font-size:1.05rem; letter-spacing:-.4px; }
+.match-result p { margin:7px 0; line-height:1.5; font-size:.9rem; color:light-dark(#65716a,#c0cbc2); }
+.match-result .match-meta { display:flex; flex-wrap:wrap; gap:7px; margin-top:10px; }
+.match-result .skill { display:inline-block; }
+.example-note { margin:14px 0; padding:13px; border-radius:12px; background:light-dark(#eef3eb,#29382f); color:light-dark(#4f6254,#d0ddd2); font-size:.88rem; line-height:1.5; }
+.example-panel { margin:15px 0; padding:15px; border:1px solid light-dark(#dfe5dc,#45534a); border-radius:14px; background:light-dark(#f8faf6,#19231e); }
+.example-panel h3 { margin:0 0 8px; font-size:1rem; letter-spacing:-.3px; }
+.example-panel p { margin:6px 0; color:light-dark(#65716a,#c0cbc2); font-size:.88rem; line-height:1.5; }
+.fit-meter { height:9px; background:light-dark(#e5e9e2,#39443d); border-radius:999px; overflow:hidden; margin:10px 0 7px; }
+.fit-meter span { display:block; height:100%; border-radius:999px; background:#2f9660; }
+.fit-meter.low span { background:#d18a42; }
+.fit-breakdown { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px; }
+.fit-breakdown div { padding:10px; border-radius:10px; background:light-dark(#eef3eb,#29382f); }
+.fit-breakdown strong { display:block; font-size:1.15rem; }
+.fit-breakdown small { color:light-dark(#65716a,#c0cbc2); line-height:1.4; }
+.pricing-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.price-card { background:light-dark(#fff,#202a26); border:1px solid light-dark(#e0e5dd,#36413b); border-radius:calc(18px * var(--site-radius-scale)); padding:24px; }
+.price-card h3 { margin:0 0 10px; font-size:1.1rem; letter-spacing:-.4px; }
+.price-card .price { display:block; font-size:2rem; font-weight:900; letter-spacing:-1px; color:light-dark(#123b35,#e7b65c); margin:10px 0; }
+.price-card p { color:light-dark(#65716a,#c0cbc2); line-height:1.55; margin:0; font-size:.9rem; }
+.pricing-total { margin-top:18px; padding:20px 22px; border-radius:16px; background:light-dark(#e9eee7,#202a26); display:flex; justify-content:space-between; align-items:center; gap:15px; }
+.pricing-total strong { font-size:1.5rem; }
+.verification-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.verification-card { background:light-dark(#fff,#202a26); border:1px solid light-dark(#e0e5dd,#36413b); border-radius:18px; padding:22px; }
+.verification-card h3 { margin:0 0 8px; font-size:1.15rem; letter-spacing:-.5px; }
+.verification-card p { color:light-dark(#65716a,#c0cbc2); line-height:1.55; font-size:.9rem; }
+.verification-card input,.verification-card select { width:100%; border:1px solid light-dark(#cfd8ce,#45534a); border-radius:10px; padding:11px; margin:5px 0 12px; background:light-dark(#fff,#17201c); color:inherit; }
+.verification-status { margin-top:12px; padding:12px; border-radius:10px; background:light-dark(#eef3eb,#29382f); font-size:.88rem; line-height:1.5; }
+.verification-badges { display:flex; flex-wrap:wrap; gap:8px; margin:14px 0; }
+.verification-badges .pill { font-size:.75rem; }
+@media (prefers-color-scheme:dark) { .hero-card { background:#f7f5ed; color:#18231f; } }
+@media(max-width:850px) { .hero-inner { grid-template-columns:1fr; gap:35px; } .hero-card { max-width:520px; transform:none; } .jobs { grid-template-columns:repeat(2,1fr); } .pricing-grid { grid-template-columns:1fr; } .section-heading { align-items:start; flex-direction:column; } .how-grid { grid-template-columns:1fr; } .cta-panel { align-items:flex-start; flex-direction:column; } }
+@media(max-width:560px) { .nav-links a:not(.nav-cta) { display:none; } .nav-links { gap:10px; } .stats { grid-template-columns:1fr; margin-top:18px; } .jobs { grid-template-columns:1fr; } .hero { padding-top:48px; } .footer-inner { flex-direction:column; align-items:flex-start; } }
+</style>
+</head>
+<body>
+<div id="app">
+<header class="site-header">
+  <nav class="nav" aria-label="Main navigation">
+    <div class="brand"><span class="brand-mark">TM</span><span>TradesMatch</span></div>
+    <div class="nav-links"><a href="#opportunities">Find a path</a><a href="#how-it-works">How it works</a><a href="#verification">Verification</a><a href="#pricing">Pricing</a><button class="btn btn-gold nav-cta" data-open="student">Join the network</button></div>
+  </nav>
+</header>
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">Your skills. Your next move.</div>
+      <h1>Turn what you learn into a career that moves.</h1>
+      <p>TradesMatch connects students with automotive shops looking for their skills, CTE training, and certifications. Find opportunities, build experience, and take the next step toward the workforce.</p>
+      <div class="hero-actions"><button class="btn btn-gold" data-open="student">I'm a student ↗</button><button class="btn btn-outline" data-open="shop">I'm an automotive shop</button></div>
+      <div class="hero-note"><span>✓</span><span>Built to connect classroom skills with real-world opportunities.</span></div>
+    </div>
+    <div class="hero-card" aria-label="Example student match card">
+      <div class="card-top"><span class="pill">✦ Sample match</span><span class="muted">Demo profile</span></div>
+      <div class="match-person"><div class="avatar">JR</div><div><h3>Jordan R.</h3><div class="muted">Automotive CTE student</div></div></div>
+      <div class="muted">Skills & qualifications</div>
+      <div class="skill-row"><span class="skill">Brake systems</span><span class="skill">Oil service</span><span class="skill">Safety certified</span></div>
+      <div class="match-footer"><div><div class="muted">Suggested opportunity</div><strong>Entry-Level Technician</strong></div><span class="pill gold">Skills match</span></div>
+    </div>
+  </div>
+</section>
+<main>
+  <section class="stats" aria-label="How TradesMatch measures impact">
+    <div class="stat"><strong id="studentCount">250+</strong><span>Students in the network <em>(demo goal)</em></span></div>
+    <div class="stat"><strong id="shopCount">40+</strong><span>Partner shops <em>(demo goal)</em></span></div>
+    <div class="stat"><strong id="hireCount">75+</strong><span>Successful placements <em>(demo goal)</em></span></div>
+  </section>
+  <section class="section" id="opportunities">
+    <div class="section-heading"><div><div class="eyebrow">Explore opportunities</div><h2>Find your lane in automotive.</h2></div><p>Browse sample roles and see how your training can connect to what local automotive employers need.</p></div>
+    <div class="tabs" role="tablist" aria-label="Filter opportunities"><button class="tab active" data-filter="all" role="tab" aria-selected="true">All opportunities</button><button class="tab" data-filter="student" role="tab" aria-selected="false">For students</button><button class="tab" data-filter="shop" role="tab" aria-selected="false">For shops</button></div>
+    <div class="jobs" id="jobGrid">
+      <article class="job" data-audience="student"><div class="job-icon">🔧</div><h3>Entry-Level Technician</h3><p>Put classroom fundamentals into practice with an automotive service team.</p><div class="job-bottom"><span>Beginner friendly · Full-time</span><button data-role="Entry-Level Technician" data-open="student">View match</button></div></article>
+      <article class="job" data-audience="student"><div class="job-icon">🛞</div><h3>Tire & Lube Technician</h3><p>Build hands-on experience with routine maintenance and shop safety.</p><div class="job-bottom"><span>Starter role · Part-time</span><button data-role="Tire & Lube Technician" data-open="student">View match</button></div></article>
+      <article class="job" data-audience="student"><div class="job-icon">⚡</div><h3>Automotive Apprentice</h3><p>Learn from experienced technicians while developing your trade skills.</p><div class="job-bottom"><span>Training pathway · Flexible</span><button data-role="Automotive Apprentice" data-open="student">View match</button></div></article>
+      <article class="job" data-audience="shop"><div class="job-icon">🏁</div><h3>Find Qualified Talent</h3><p>Connect with students whose CTE training and certifications fit your shop's needs.</p><div class="job-bottom"><span>For automotive employers</span><button data-action="candidates">Find candidates</button></div></article>
+      <article class="job" data-audience="shop"><div class="job-icon">🎓</div><h3>Connect With Schools</h3><p>Build a pipeline with school programs preparing students for automotive careers.</p><div class="job-bottom"><span>School partnerships</span><button data-action="partner">Partner with us</button></div></article>
+      <article class="job" data-audience="student"><div class="job-icon">📋</div><h3>Skills & Certification Match</h3><p>Share your qualifications and explore roles that match your experience.</p><div class="job-bottom"><span>Personalized search</span><button data-action="profile">Build my profile</button></div></article>
+    </div>
+  </section>
+  <section class="section" id="how-it-works">
+    <div class="section-heading"><div><div class="eyebrow">Simple by design</div><h2>From training to the shop floor.</h2></div><p>TradesMatch is designed to make hiring easier for shops and help students find a clear first step into the automotive workforce.</p></div>
+    <div class="how-grid">
+      <div class="step"><div class="step-number">STEP 01</div><h3>Create a profile</h3><p>Students share their skills, CTE classes, and certifications. Shops describe the roles and qualifications they need.</p></div>
+      <div class="step"><div class="step-number">STEP 02</div><h3>Find the right fit</h3><p>Browse opportunities and connect students with automotive businesses looking for their specific skill sets.</p></div>
+      <div class="step"><div class="step-number">STEP 03</div><h3>Build experience</h3><p>Move from school training into interviews, work experience, and potential employment with a partner shop.</p></div>
+    </div>
+  </section>
+  <section class="section" id="pricing">
+    <div class="section-heading"><div><div class="eyebrow">Straightforward hiring fees</div><h2>TradesMatch pricing.</h2></div><p>Shops pay in stages when they hire a candidate through TradesMatch.</p></div>
+    <div class="pricing-grid">
+      <article class="price-card"><span class="step-number">WHEN YOU HIRE</span><h3>Purchase fee</h3><strong class="price">$250</strong><p>Due when you first hire someone through TradesMatch.</p></article>
+      <article class="price-card"><span class="step-number">AFTER 30 DAYS</span><h3>30-day fee</h3><strong class="price">$250</strong><p>Due once the hired employee reaches 30 days.</p></article>
+      <article class="price-card"><span class="step-number">AFTER 90 DAYS</span><h3>90-day fee</h3><strong class="price">$500</strong><p>Due once the hired employee reaches 90 days.</p></article>
+    </div>
+    <div class="pricing-total"><div><span class="step-number">TOTAL PER SUCCESSFUL HIRE</span><div class="muted">Across all three payment stages</div></div><strong>$1,000</strong></div>
+    <p class="muted" style="margin-top:12px">Pricing shown is for the TradesMatch demo concept and is not a live payment or billing system.</p>
+  </section>
+  <section class="section" id="verification">
+    <div class="section-heading"><div><div class="eyebrow">Proof you can trust</div><h2>Verified hours. Verified skills.</h2></div><p>TradesMatch is designed to let shops and schools confirm a student's experience and credentials before those records are marked verified.</p></div>
+    <div class="verification-badges"><span class="pill">✓ Hours verified by supervisor</span><span class="pill">✓ Certification checked with issuer</span><span class="pill gold">◷ Pending review</span></div>
+    <div class="verification-grid">
+      <article class="verification-card"><h3>Submit work hours</h3><p>Enter the hours you've completed. A shop supervisor or authorized school representative must confirm them before they count as verified.</p><form id="hoursForm"><label for="hoursOrganization">Shop or school</label><input id="hoursOrganization" required placeholder="Organization name"><label for="hoursAmount">Hours completed</label><input id="hoursAmount" type="number" min="1" max="10000" required placeholder="e.g. 40"><label for="hoursSupervisor">Supervisor name and work email</label><input id="hoursSupervisor" required placeholder="Supervisor contact"><button class="btn btn-dark" type="submit">Submit hours for review</button></form><div class="verification-status" id="hoursStatus" aria-live="polite">No hours submitted yet. Approved hours will appear here after confirmation.</div></article>
+      <article class="verification-card"><h3>Submit a certification</h3><p>Provide the credential details. TradesMatch should confirm the credential with its issuing organization before displaying a verified badge.</p><form id="certForm"><label for="certName">Certification name</label><input id="certName" required placeholder="e.g. ASE certification"><label for="certIssuer">Issuing organization</label><input id="certIssuer" required placeholder="Organization that issued it"><label for="certNumber">Credential ID (if available)</label><input id="certNumber" placeholder="Credential or certificate number"><button class="btn btn-dark" type="submit">Submit certification</button></form><div class="verification-status" id="certStatus" aria-live="polite">No certification submitted yet. Issuer confirmation is required.</div></article>
+    </div>
+    <div class="example-panel" style="margin-top:16px"><h3>How verification works</h3><p><strong>1. Student submits:</strong> Hours, supervisor details, or certification information.</p><p><strong>2. Trusted source confirms:</strong> A supervisor confirms hours; the school or credential issuer confirms training or certification.</p><p><strong>3. TradesMatch records the result:</strong> The profile shows Pending, Verified, or Needs Review, with the reviewer and confirmation date where appropriate.</p><p class="muted"><strong>Demo limitation:</strong> These forms only create local sample requests in this browser. They do not contact supervisors, schools, ASE, or other issuers, and they do not independently verify documents. Do not enter real private information in this prototype.</p></div>
+  </section>
+  <section class="cta-panel"><div><h2>Ready to connect skills with opportunity?</h2><p>Join the TradesMatch demo network as a student or automotive shop. This prototype shows the concept—submissions are not sent to a real hiring system.</p></div><button class="btn" data-open="student">Get started ↗</button></section>
+</main>
+<footer class="footer"><div class="footer-inner"><div class="brand"><span class="brand-mark">TM</span><strong>TradesMatch</strong></div><span>Connecting CTE students with automotive careers.</span><span>Demo prototype · Not a live job board</span></div></footer>
+</div>
+<div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <div class="modal-head"><div><div class="eyebrow">TradesMatch network</div><h2 id="modalTitle">Build your student profile</h2><div class="muted" id="modalIntro">Tell us a little about your training and interests.</div></div><button class="close" id="closeModal" aria-label="Close dialog">×</button></div>
+    <div id="examplePanel" class="example-panel" aria-live="polite"></div>
+    <form id="signupForm">
+      <div class="form-field"><label for="fullName">Name</label><input id="fullName" name="fullName" placeholder="Your name" required></div>
+      <div class="form-field"><label for="email">Email</label><input id="email" name="email" type="email" placeholder="you@example.com" required></div>
+      <div class="form-field"><label for="schoolShop" id="orgLabel">School or CTE program</label><input id="schoolShop" name="schoolShop" placeholder="School or program name" required></div>
+      <div class="form-field" id="interestField"><label for="interest">Automotive interest</label><select id="interest" name="interest"><option>General automotive repair</option><option>Diagnostics and electrical</option><option>Tires and maintenance</option><option>Apprenticeship</option><option>Collision repair</option></select></div>
+      <button class="btn btn-dark" type="submit" style="width:100%" id="submitLabel">Create demo profile</button>
+      <div class="form-message" id="formMessage" role="status"></div>
+    </form>
+  </div>
+</div>
+<div class="modal-backdrop" id="matchBackdrop" role="dialog" aria-modal="true" aria-labelledby="matchTitle">
+  <div class="modal">
+    <div class="modal-head"><div><div class="eyebrow">TradesMatch · Sample results</div><h2 id="matchTitle">Your suggested matches</h2><div class="muted" id="matchIntro">Example opportunities based on the selected role.</div></div><button class="close" id="closeMatches" aria-label="Close matches">×</button></div>
+    <div id="matchResults" class="match-results show"></div>
+    <p class="muted" style="margin-top:16px">These are fictional demo matches, not live job openings. No applications are sent.</p>
+    <button class="btn btn-dark" id="matchProfileBtn" style="width:100%;margin-top:10px">Create demo profile</button>
+  </div>
+</div>
+<div class="modal-backdrop" id="candidateBackdrop" role="dialog" aria-modal="true" aria-labelledby="candidateTitle">
+  <div class="modal">
+    <div class="modal-head"><div><div class="eyebrow">TradesMatch · Talent preview</div><h2 id="candidateTitle">Sample candidates</h2><div class="muted">Example student profiles that a shop could discover.</div></div><button class="close" id="closeCandidates" aria-label="Close candidates">×</button></div>
+    <div class="match-list">
+      <article class="match-result"><div class="card-top"><span class="pill">94% skills fit</span><span class="muted">Demo profile</span></div><h3>Jordan R.</h3><strong>Automotive CTE student</strong><p>Interested in entry-level service work and learning from experienced technicians.</p><div class="match-meta"><span class="skill">Oil service</span><span class="skill">Brake basics</span><span class="skill">Shop safety</span></div><p><strong>Availability:</strong> After school · Part-time</p></article>
+      <article class="match-result"><div class="card-top"><span class="pill">89% skills fit</span><span class="muted">Demo profile</span></div><h3>Alex M.</h3><strong>Automotive maintenance student</strong><p>Practicing routine maintenance, inspections, and safe tool handling in CTE classes.</p><div class="match-meta"><span class="skill">Tire rotation</span><span class="skill">Vehicle inspections</span><span class="skill">Teamwork</span></div><p><strong>Availability:</strong> Weekends · Flexible</p></article>
+    </div>
+    <p class="example-note">Candidate names and match percentages are fictional examples. No real student information is shown, and this demo does not contact candidates.</p>
+    <button class="btn btn-dark" id="candidatePartnerBtn" style="width:100%">I'm a shop — get started</button>
+  </div>
+</div>
+<script>
+const backdrop = document.getElementById('modalBackdrop');
+const matchBackdrop = document.getElementById('matchBackdrop');
+const candidateBackdrop = document.getElementById('candidateBackdrop');
+document.getElementById('hoursForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const organization = document.getElementById('hoursOrganization').value.trim();
+  const hours = Number(document.getElementById('hoursAmount').value);
+  const supervisor = document.getElementById('hoursSupervisor').value.trim();
+  document.getElementById('hoursStatus').textContent = `Demo request created: ${hours} hours at ${organization}. Supervisor confirmation from ${supervisor} is still required. Status: PENDING REVIEW — not verified.`;
+});
+document.getElementById('certForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const name = document.getElementById('certName').value.trim();
+  const issuer = document.getElementById('certIssuer').value.trim();
+  const credential = document.getElementById('certNumber').value.trim();
+  document.getElementById('certStatus').textContent = `Demo request created for ${name}, issued by ${issuer}${credential ? ' (ID: ' + credential + ')' : ''}. Confirmation from the issuing organization is still required. Status: PENDING REVIEW — not verified.`;
+});
+const form = document.getElementById('signupForm');
+const msg = document.getElementById('formMessage');
+let mode = 'student';
+const sampleMatches = {
+  'Entry-Level Technician': [
+    { shop: 'Northside Auto Care', role: 'Junior Service Technician', location: 'Arlington Heights, IL · Sample location', schedule: 'Full-time · Entry level', score: 92, strengths: 'Oil service, brake basics, and shop safety align with the role.', gaps: 'More hands-on diagnostic experience would improve the fit.', skills: ['Oil service', 'Brake basics', 'Shop safety'], note: 'A training-focused role helping with inspections, routine maintenance, and supervised repairs.' },
+    { shop: 'Oak Street Garage', role: 'Automotive Service Assistant', location: 'Mount Prospect, IL · Sample location', schedule: 'Part-time · After school', score: 86, strengths: 'Vehicle inspections, tool safety, and teamwork fit the daily tasks.', gaps: 'More practice with customer check-ins and service documentation would help.', skills: ['Vehicle inspections', 'Tool safety', 'Teamwork'], note: 'Support technicians with vehicle check-ins, basic inspections, and keeping work areas organized.' }
+  ],
+  'Tire & Lube Technician': [
+    { shop: 'QuickTurn Tire & Service', role: 'Tire and Lube Trainee', location: 'Rolling Meadows, IL · Sample location', schedule: 'Part-time · Flexible', score: 95, strengths: 'Tire rotation, oil changes, and safety checks are a strong match.', gaps: 'More experience documenting inspections would strengthen the profile.', skills: ['Tire rotation', 'Oil changes', 'Safety checks'], note: 'Build routine-maintenance experience with a mentor and a clear skills checklist.' },
+    { shop: 'Parkway Auto Center', role: 'Maintenance Bay Assistant', location: 'Palatine, IL · Sample location', schedule: 'Weekend shifts · Entry level', score: 88, strengths: 'Fluid checks, tire pressure, and workplace safety fit well.', gaps: 'More practice with maintenance checklists would help.', skills: ['Fluid checks', 'Tire pressure', 'Workplace safety'], note: 'Help prepare vehicles for service and practice maintenance procedures under supervision.' }
+  ],
+  'Automotive Apprentice': [
+    { shop: 'Summit Motor Works', role: 'Automotive Apprentice', location: 'Schaumburg, IL · Sample location', schedule: 'Apprenticeship · Training pathway', score: 91, strengths: 'CTE coursework, diagnostic basics, and coachability suit a mentored role.', gaps: 'More real-world repair practice would improve readiness.', skills: ['CTE coursework', 'Diagnostics basics', 'Coachability'], note: 'Learn diagnostic and repair workflows alongside experienced technicians.' },
+    { shop: 'Precision Auto Lab', role: 'Junior Shop Apprentice', location: 'Des Plaines, IL · Sample location', schedule: 'Flexible · Mentored', score: 84, strengths: 'Electrical basics, hand tools, and problem solving are relevant.', gaps: 'More experience with diagnostic procedures would help.', skills: ['Electrical basics', 'Hand tools', 'Problem solving'], note: 'Develop hands-on skills through supervised shop tasks and regular progress check-ins.' }
+  ]
+};
+function showMatches(role) {
+  const matches = sampleMatches[role] || sampleMatches['Entry-Level Technician'];
+  document.getElementById('matchTitle').textContent = role + ' matches';
+  document.getElementById('matchIntro').textContent = 'Here are two sample opportunities for ' + role.toLowerCase() + '.';
+  document.getElementById('matchResults').innerHTML = '<div class="match-list">' + matches.map(match => `<article class="match-result"><div class="card-top"><span class="pill">${match.score}% best-fit match</span><span class="muted">Demo match</span></div><div class="fit-meter"><span style="width:${match.score}%"></span></div><p><strong>Why you're a good fit:</strong> ${match.strengths}</p><div class="fit-breakdown"><div><strong>${match.score}%</strong><small>Skills and role requirements that match</small></div><div><strong>${100 - match.score}%</strong><small>Skills or requirements that are not yet a match</small></div></div><p><strong>What could improve your fit:</strong> ${match.gaps}</p><h3>${match.role}</h3><strong>${match.shop}</strong><p>${match.location}</p><p>${match.note}</p><div class="muted">${match.schedule}</div><div class="match-meta">${match.skills.map(skill => `<span class="skill">${skill}</span>`).join('')}</div></article>`).join('') + '</div>';
+  matchBackdrop.classList.add('open');
+}
+document.querySelectorAll('.job-bottom button[data-role]').forEach(button => button.addEventListener('click', () => showMatches(button.dataset.role)));
+document.getElementById('closeMatches').addEventListener('click', () => matchBackdrop.classList.remove('open'));
+matchBackdrop.addEventListener('click', e => { if (e.target === matchBackdrop) matchBackdrop.classList.remove('open'); });
+document.getElementById('matchProfileBtn').addEventListener('click', () => { matchBackdrop.classList.remove('open'); openModal('student'); });
+document.querySelectorAll('[data-action="candidates"]').forEach(button => button.addEventListener('click', () => candidateBackdrop.classList.add('open')));
+document.getElementById('closeCandidates').addEventListener('click', () => candidateBackdrop.classList.remove('open'));
+candidateBackdrop.addEventListener('click', e => { if (e.target === candidateBackdrop) candidateBackdrop.classList.remove('open'); });
+document.getElementById('candidatePartnerBtn').addEventListener('click', () => { candidateBackdrop.classList.remove('open'); openModal('shop', 'partner'); });
+document.querySelectorAll('[data-action="partner"]').forEach(button => button.addEventListener('click', () => openModal('shop', 'partner')));
+document.querySelectorAll('[data-action="profile"]').forEach(button => button.addEventListener('click', () => openModal('student', 'profile')));
+function openModal(nextMode, role) {
+  mode = nextMode || 'student';
+  const shop = mode === 'shop';
+  document.getElementById('modalTitle').textContent = shop ? (role === 'partner' ? 'Partner with TradesMatch' : 'Find your next great hire') : 'Build your student profile';
+  document.getElementById('modalIntro').textContent = shop ? (role === 'partner' ? 'Example partnership sign-up for shops interested in connecting with local CTE programs.' : 'Share your shop details to preview the employer sign-up flow.') : (role === 'profile' ? 'Example profile: list your CTE classes, skills, and the automotive work you want to explore.' : 'Tell us a little about your training and interests.');
+  document.getElementById('orgLabel').textContent = shop ? 'Automotive shop name' : 'School or CTE program';
+  document.getElementById('schoolShop').placeholder = shop ? 'Shop or garage name' : 'School or program name';
+  document.getElementById('interestField').style.display = shop ? 'none' : 'block';
+  document.getElementById('submitLabel').textContent = shop ? 'Register shop (demo)' : 'Create demo profile';
+  const examplePanel = document.getElementById('examplePanel');
+  if (shop && role === 'partner') {
+    examplePanel.innerHTML = '<h3>Example partnership</h3><p><strong>Summit Motor Works</strong> · Sample automotive shop</p><p>Interested in meeting CTE students for job-shadow days, entry-level service roles, and apprenticeship opportunities.</p><p><strong>Looking to connect with:</strong> Automotive technology programs · Students learning maintenance and diagnostics</p><p class="muted">Fictional example — this does not represent a real business or partnership.</p>';
+  } else if (!shop && role === 'profile') {
+    examplePanel.innerHTML = '<h3>Example student profile</h3><p><strong>Jordan R.</strong> · Automotive CTE student</p><p><strong>Skills:</strong> Oil service, tire rotation, shop safety, basic brake inspection</p><p><strong>Interests:</strong> Entry-level technician or apprenticeship · <strong>Availability:</strong> After school, part-time</p><p class="muted">Use this sample as a guide; enter your own details in the form below. Fictional demo profile.</p>';
+  } else {
+    examplePanel.innerHTML = '<h3>What you can do here</h3><p>' + (shop ? 'Add your shop name and contact details to preview the employer registration flow.' : 'Add your school or CTE program and automotive interests to preview a student profile.') + '</p>';
+  }
+  msg.classList.remove('show'); msg.textContent = '';
+  if (role && !shop) document.getElementById('interest').value = role === 'Tire & Lube Technician' ? 'Tires and maintenance' : role === 'Automotive Apprentice' ? 'Apprenticeship' : 'General automotive repair';
+  backdrop.classList.add('open');
+  document.getElementById('fullName').focus();
+}
+document.querySelectorAll('[data-open]').forEach(button => button.addEventListener('click', () => openModal(button.dataset.open, button.dataset.role)));
+document.getElementById('closeModal').addEventListener('click', () => backdrop.classList.remove('open'));
+backdrop.addEventListener('click', e => { if (e.target === backdrop) backdrop.classList.remove('open'); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') backdrop.classList.remove('open'); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') matchBackdrop.classList.remove('open'); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') candidateBackdrop.classList.remove('open'); });
+const ACCOUNT_KEY = 'tradesMatchDemoAccounts';
+const SESSION_KEY = 'tradesMatchDemoSession';
+function getAccounts() {
+  try { return JSON.parse(localStorage.getItem(ACCOUNT_KEY) || '{}'); }
+  catch { return {}; }
+}
+function showAccount(account) {
+  msg.textContent = `Account created for ${account.name}. Your ${account.type} profile is saved in this browser. Email: ${account.email}. ${account.organization ? 'School/shop: ' + account.organization + '. ' : ''}${account.interest ? 'Interest: ' + account.interest + '. ' : ''}This is a local demo account, not a secure online account.`;
+  msg.classList.add('show');
+  const signOut = document.createElement('button');
+  signOut.type = 'button'; signOut.className = 'btn btn-outline'; signOut.style.marginTop = '10px'; signOut.textContent = 'Sign out of this demo account';
+  signOut.addEventListener('click', () => { localStorage.removeItem(SESSION_KEY); msg.textContent = 'You are signed out. Your demo profile remains saved on this browser.'; });
+  msg.appendChild(document.createElement('br'));
+  msg.appendChild(signOut);
+}
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  const data = new FormData(form);
+  const account = {
+    name: String(data.get('fullName')).trim(),
+    email: String(data.get('email')).trim().toLowerCase(),
+    organization: String(data.get('schoolShop')).trim(),
+    interest: mode === 'student' ? String(data.get('interest')) : '',
+    type: mode,
+    updatedAt: new Date().toISOString()
+  };
+  if (!account.name || !account.email || !account.organization) return;
+  try {
+    const accounts = getAccounts();
+    accounts[account.email] = account;
+    localStorage.setItem(ACCOUNT_KEY, JSON.stringify(accounts));
+    localStorage.setItem(SESSION_KEY, account.email);
+    showAccount(account);
+  } catch (error) {
+    msg.textContent = 'Your browser could not save this demo account. Check that local storage is enabled and try again.';
+    msg.classList.add('show');
+  }
+});
+const savedEmail = localStorage.getItem(SESSION_KEY);
+if (savedEmail && getAccounts()[savedEmail]) {
+  const accountButton = document.querySelector('.nav-cta');
+  accountButton.textContent = 'My profile';
+  accountButton.addEventListener('click', () => {
+    openModal(getAccounts()[savedEmail].type);
+    form.elements.fullName.value = getAccounts()[savedEmail].name;
+    form.elements.email.value = getAccounts()[savedEmail].email;
+    form.elements.schoolShop.value = getAccounts()[savedEmail].organization;
+    if (getAccounts()[savedEmail].interest) form.elements.interest.value = getAccounts()[savedEmail].interest;
+    showAccount(getAccounts()[savedEmail]);
+  });
+}
+document.querySelectorAll('.tab').forEach(tab => tab.addEventListener('click', () => {
+  document.querySelectorAll('.tab').forEach(t => { t.classList.toggle('active', t === tab); t.setAttribute('aria-selected', t === tab ? 'true' : 'false'); });
+  const filter = tab.dataset.filter;
+  document.querySelectorAll('.job').forEach(job => { job.style.display = filter === 'all' || job.dataset.audience === filter ? 'flex' : 'none'; });
+}));
+</script>
+
+<!--sites-preview-theme:start-->
+<style data-sites-preview-theme>:root{--site-primary:#3a83f7 !important;--site-on-primary:#000000 !important;--site-secondary:#a4cdfb !important;--site-on-secondary:#000000 !important}</style>
+<script type="application/json" data-sites-preview-theme>{"appearance":"custom","primary":"#3a83f7","secondary":"#a4cdfb","background":"#f4f5ef","typography":"original","spacing":1,"roundness":1,"headingScale":1,"decorationOpacity":1}</script>
+<!--sites-preview-theme:end-->
+</body>
+</html>
